@@ -10,17 +10,17 @@ An AI-engineering interview is not a trivia quiz — it is *"have you actually s
 
 ## Contents
 
-- [🧠 LLM Foundations](#llm-foundations)
-- [⚙️ Transformers & Architecture](#transformers-architecture)
-- [✍️ Prompting & In-Context Learning](#prompting-in-context-learning)
-- [🔎 RAG — Retrieval-Augmented Generation](#rag-retrieval-augmented-generation)
-- [🎯 Fine-tuning & Alignment](#fine-tuning-alignment)
-- [🤖 Agents & Tool Use](#agents-tool-use)
-- [📊 Evaluation](#evaluation)
-- [🚀 Inference & Serving](#inference-serving)
-- [🛠️ Production, Ops & Cost](#production-ops-cost)
-- [🛡️ Safety & Security](#safety-security)
-- [🔬 Scaling & the Research Frontier](#scaling-the-research-frontier)
+- [🧠 LLM Foundations](#-llm-foundations)
+- [⚙️ Transformers & Architecture](#️-transformers--architecture)
+- [✍️ Prompting & In-Context Learning](#️-prompting--in-context-learning)
+- [🔎 RAG — Retrieval-Augmented Generation](#-rag--retrieval-augmented-generation)
+- [🎯 Fine-tuning & Alignment](#-fine-tuning--alignment)
+- [🤖 Agents & Tool Use](#-agents--tool-use)
+- [📊 Evaluation](#-evaluation)
+- [🚀 Inference & Serving](#-inference--serving)
+- [🛠️ Production, Ops & Cost](#️-production-ops--cost)
+- [🛡️ Safety & Security](#️-safety--security)
+- [🔬 Scaling & the Research Frontier](#-scaling--the-research-frontier)
 
 ---
 
