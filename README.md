@@ -1,6 +1,6 @@
 # Awesome AI Engineer Interview Questions [![Awesome](https://awesome.re/badge.svg)](https://awesome.re)
 
-> 105 real interview questions for **AI / LLM engineer** roles — covering LLMs, transformers, prompting, RAG, fine-tuning, agents, evaluation, inference, production and safety — each with a concise answer. Curated by [Skillumen](https://www.skillumen.com).
+> 105 real interview questions for **AI / LLM engineer** roles — covering LLMs, transformers, prompting, RAG, fine-tuning, agents, evaluation, inference, production and safety — each with a concise answer. Maintained by [Skillumen](https://www.skillumen.com).
 
 An AI-engineering interview is not a trivia quiz — it is *"have you actually shipped this?"* Every question below is one an interviewer really asks in 2026, grouped by topic, with a one-line answer to anchor your thinking. For the full answer, worked examples and a chance to **rehearse it out loud in an AI voice mock**, follow the topic links to Skillumen.
 
