@@ -129,6 +129,7 @@ A toolkit of prompt patterns: zero-shot, few-shot, chain-of-thought, self-consis
 Treat prompts like code: prompts as code means version control, regression tests, and an eval gate in CI — so a prompt change is reviewed and tested before it ships, not pushed live on a hunch.  
 
 ➡️ **Full answers, diagrams & practice:** [Prompting & In-Context Learning on Skillumen →](https://www.skillumen.com/blog/llm-interview-questions.html)
+📎 **Related deep-dives:** [Generative AI Interview Questions](https://www.skillumen.com/blog/generative-ai-interview-questions.html)
 
 ---
 
@@ -162,6 +163,7 @@ Beyond basic chunk-and-search, 2026 retrieval adds graphrag (follow links in a k
 Evaluate RAG in __two layers__: score retrieval and generation separately, because a bad answer can come from fetching the wrong chunks OR from the model misusing good chunks.  Retrieval uses ranking metrics (precision@k, recall@k, MRR, nDCG); generation splits into answer correctness (right vs a reference) and faithfulness (grounded in the chunks).  
 
 ➡️ **Full answers, diagrams & practice:** [RAG — Retrieval-Augmented Generation on Skillumen →](https://www.skillumen.com/blog/rag-interview-questions.html)
+📎 **Related deep-dives:** [What is RAG?](https://www.skillumen.com/blog/what-is-rag.html) · [RAG vs Fine-tuning](https://www.skillumen.com/blog/rag-vs-fine-tuning.html)
 
 ---
 
@@ -207,6 +209,7 @@ A model is only as good as its data.  2026 training leans on careful curation, d
 Machine unlearning makes a trained model forget specific data — for privacy ('right to be forgotten'), copyright, or safety — without retraining from scratch.  
 
 ➡️ **Full answers, diagrams & practice:** [Fine-tuning & Alignment on Skillumen →](https://www.skillumen.com/blog/rag-vs-fine-tuning.html)
+📎 **Related deep-dives:** [RAG Interview Questions](https://www.skillumen.com/blog/rag-interview-questions.html)
 
 ---
 
@@ -240,6 +243,7 @@ Voice agents chain speech-to-text → LLM → text-to-speech (where latency is e
 Watching an agent (observability) tells you what happened; agent evaluation tells you whether it was right.  Most teams have the first and skip the second — and evaluating an agent means scoring its whole trajectory, not just the final answer.  
 
 ➡️ **Full answers, diagrams & practice:** [Agents & Tool Use on Skillumen →](https://www.skillumen.com/blog/agentic-ai-interview-questions.html)
+📎 **Related deep-dives:** [LangGraph vs MCP](https://www.skillumen.com/blog/langgraph-vs-mcp.html)
 
 ---
 
@@ -402,6 +406,7 @@ Instead of writing one word after another, Diffusion LLMs start with a whole dra
 Three camps: __closed frontier__ (GPT, Claude, Gemini), open-weight (Llama, Mistral, and Chinese labs DeepSeek/Qwen/Kimi), and small/specialized models.  The trade-off is capability vs control vs cost.  
 
 ➡️ **Full answers, diagrams & practice:** [Scaling & the Research Frontier on Skillumen →](https://www.skillumen.com/blog/ai-engineer-interview-questions.html)
+📎 **Related deep-dives:** [AI Engineer Roadmap 2026](https://www.skillumen.com/blog/ai-engineer-roadmap-2026.html)
 
 ---
 
