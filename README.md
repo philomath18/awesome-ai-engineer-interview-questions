@@ -1,19 +1,19 @@
 # Awesome AI Engineer Interview Questions [![Awesome](https://awesome.re/badge.svg)](https://awesome.re)
 
-> 105 real interview questions for **AI / LLM engineer** roles — covering LLMs, transformers, prompting, RAG, fine-tuning, agents, evaluation, inference, production and safety — each with a concise answer. Maintained by [Skillumen](https://www.skillumen.com).
+> 105 real interview questions for **AI / LLM engineer** roles, covering LLMs, transformers, prompting, RAG, fine-tuning, agents, evaluation, inference, production and safety, each with a concise answer. Maintained by [Skillumen](https://www.skillumen.com).
 
-An AI-engineering interview is not a trivia quiz — it is *"have you actually shipped this?"* Every question below is one an interviewer really asks in 2026, grouped by topic, with a one-line answer to anchor your thinking. For the full answer, worked examples and a chance to **rehearse it out loud in an AI voice mock**, follow the topic links to Skillumen.
+An AI-engineering interview really asks one thing: have you actually shipped this? Every question below comes up in real interviews in 2026, grouped by topic, with a short answer to anchor your thinking. For worked answers and a chance to **rehearse out loud in an AI voice mock**, follow the topic links.
 
-<p align="center"><a href="https://www.skillumen.com/?utm_source=github&utm_medium=awesome-list&utm_campaign=ai-interview"><b>▶ Practice these free — 30-day LLM interview bootcamp →</b></a></p>
+<p align="center"><a href="https://www.skillumen.com/?utm_source=github&utm_medium=awesome-list&utm_campaign=ai-interview"><b>Practice these free: the 30-day LLM interview bootcamp</b></a></p>
 
-**Updated 2026-08-31** · 105 questions · 11 topics · answers link to full write-ups.
+**Updated 2026-09-09** · 105 questions · 11 topics · answers link to full write-ups.
 
 ## Contents
 
 - [🧠 LLM Foundations](#-llm-foundations)
 - [⚙️ Transformers & Architecture](#️-transformers--architecture)
 - [✍️ Prompting & In-Context Learning](#️-prompting--in-context-learning)
-- [🔎 RAG — Retrieval-Augmented Generation](#-rag--retrieval-augmented-generation)
+- [🔎 RAG (Retrieval-Augmented Generation)](#-rag-retrieval-augmented-generation)
 - [🎯 Fine-tuning & Alignment](#-fine-tuning--alignment)
 - [🤖 Agents & Tool Use](#-agents--tool-use)
 - [📊 Evaluation](#-evaluation)
@@ -26,386 +26,386 @@ An AI-engineering interview is not a trivia quiz — it is *"have you actually s
 
 ## 🧠 LLM Foundations
 
-**Q — What actually is a Large Language Model, in plain terms?**  `Foundations`  
-An LLM is a next-token predictor: it reads text as tokens and repeatedly guesses the most likely next piece.  It does pattern-completion, not database lookups, using billions of weights learned from huge amounts of internet text.  
+**Q: In plain terms, what one task is an LLM actually doing?**  `Foundations`  
+It predicts the next token, the most likely next word-piece given all the text so far.  That is the entire job: at each step it outputs a probability distribution over its whole vocabulary, and a token is sampled from it.  
 
-**Q — Why does a raw LLM ramble or ask more questions, while ChatGPT just answers? What's the difference between a base and an instruction-tuned model?**  `Foundations`  
-A base model only continues text, so a question can make it write more questions.  An instruction-tuned model is the same network sent through extra training (SFT then alignment) so it follows instructions and chats helpfully — same brain, different finishing school.  
+**Q: Why might a base model reply to a question with more questions?**  `Foundations`  
+A base model is trained on exactly one objective, predicting the next token, so it continues the pattern of the text rather than responding to it.  In its training data a question is very often followed by more questions, in quiz lists and FAQs, so the most likely continuation of "What is the capital of France?  
 
-**Q — What's the difference between training and inference for an LLM — and does the model learn from my prompts?**  `Foundations`  
-A model has two lives: training is where it learns its weights (slow, costly, done rarely), and inference is where it uses those frozen weights to answer you (fast, but on every request).  Your prompts do __not__ update the weights — cost and latency live in inference, and new knowledge comes from RAG or re-training, not chatting.  
+**Q: What's the difference between training and inference?**  `Foundations`  
+Training is the learning phase.  The model reads data, computes a loss on its next-token guesses, and uses backpropagation to update billions of weights.  
 
-**Q — Interviewer: what's the difference between an embedding model and a generative model, and when do you use each?**  `Foundations`  
-They do two different jobs people often mix up.  An embedding model turns text into a fixed vector of numbers that captures meaning — you use it to FIND things.  
+**Q: What's the difference between an embedding and a generative model?**  `Foundations`  
+An embedding model maps a piece of text to a single fixed-length vector that captures its meaning.  It returns numbers rather than words, and you use it to measure similarity for search, clustering, and retrieval.  
 
-**Q — How do you go from a pile of internet text to a helpful assistant like ChatGPT? Walk me through the stages.**  `Foundations`  
-A helpful assistant is raised in three stages that each change the model's weights: pretraining teaches raw language and world knowledge, instruction tuning teaches it to follow instructions, and alignment (RLHF/DPO) teaches it which answers people actually prefer.  prompting and RAG are different — they steer the model at __use__ time without training it at all.  
+**Q: Walk me through how a model like ChatGPT is built.**  `Foundations`  
+It is built in three training stages, each editing the weights.  Pretraining reads a huge slice of the internet predicting the next token, and picks up language and world knowledge as a side effect.  
 
-**Q — Why do LLMs confidently make things up, and what can a beginner do about it?**  `Foundations`  
-An LLM predicts plausible next words, not verified facts — so it can be fluent, confident, and simply wrong.  This is called hallucination, and simple fixes are grounding it with RAG, asking for citations, lowering temperature, and verifying anything high-stakes.  
+**Q: What does 'hallucination' mean for an LLM, and why is that term better than 'lying'?**  `Foundations`  
+A hallucination is when the model states something false as if it were fact, in the same confident tone it uses when it is right.  "Lying" implies the model knows the truth and chooses to deceive, and nothing like that is happening.  
 
-**Q — What is the context window and the 'lost in the middle' problem?**  `Foundations`  
-The context window is the maximum tokens a model can see at once — its __working memory__.  Models also tend to use the start and end better than the middle (the lost in the middle effect).  
+**Q: What is the context window, and what happens to tokens that fall outside it?**  `Foundations`  
+The context window is the maximum number of tokens a model can attend to in a single call.  It is the model's working memory, and it is shared across the system prompt, the conversation history, any pasted documents, and the reply the model generates.  
 
-**Q — What are logits, and how does softmax turn them into probabilities?**  `Foundations`  
-Logits are the model's __raw scores__ for every possible next token; softmax turns them into probabilities that sum to 1, which sampling then draws from.  
+**Q: What are logits, and how do they differ from the probabilities the model ultimately uses?**  `Foundations`  
+A logit is the model's raw confidence score for one candidate token, and the final layer emits one per token in the whole vocabulary.  Logits are unbounded, they can be negative or large, and they do not sum to anything, so they are really just a ranking.  
 
-➡️ **Full answers, diagrams & practice:** [LLM Foundations on Skillumen →](https://www.skillumen.com/blog/llm-interview-questions.html)
+➡️ **Full answers, diagrams and practice:** [LLM Foundations on Skillumen](https://www.skillumen.com/blog/llm-interview-questions.html)
 
 ---
 
 ## ⚙️ Transformers & Architecture
 
-**Q — What is tokenization and why can't an LLM just read raw text?**  `Foundations`  
-Tokenization is the step that chops text into small pieces called tokens and turns each one into a number the model can do math on.  
+**Q: What does tokenization do to your text, and why is it necessary?**  `Foundations`  
+A model only does math over numbers, so raw letters mean nothing to it.  Tokenization bridges that.  
 
-**Q — What is an embedding and what property makes it useful?**  `Foundations`  
-An embedding turns each token into a list of numbers (a vector) that captures its meaning — and similar meanings end up close together.  
+**Q: What is an embedding, and why is a raw token ID not enough?**  `Foundations`  
+An embedding replaces a token's ID with a learned dense vector, a long list of numbers, say 384 or 4096 of them.  A raw ID like 4127 is just a label.  
 
-**Q — Explain self-attention using Q, K, V intuition.**  `Foundations`  
-Self-attention lets every token look at all the other tokens and pull in information from the ones that matter most to it.  
+**Q: In plain terms, what does self-attention let each token do?**  `Foundations`  
+Self-attention lets every token look at all the other tokens in the sequence and pull in meaning from the ones most relevant to it, in a single step.  Instead of reading a word in isolation, the model rebuilds each token's vector as a blend of the words it relates to, so "it" can absorb the meaning of "cat" however far back it sits.  
 
-**Q — Why do transformers need positional encoding?**  `Foundations`  
-Attention by itself doesn't know word order, so we have to add position information on purpose.  
+**Q: What does it mean that self-attention is 'order-blind', and what concrete confusion does that cause?**  `Foundations`  
+Self-attention only computes how much each word should attend to each other word, and that quantity doesn't depend on the order of the inputs.  It treats them like a bag of words.  
 
-**Q — What does 'autoregressive' generation mean?**  `Foundations`  
-Autoregressive generation means the model writes one token at a time, each time looking at everything it has produced so far.  
+**Q: Describe the autoregressive generation loop step by step, and when does it stop?**  `Foundations`  
+You start with a prompt.  One forward pass produces logits, a score for every possible next token.  
 
-**Q — Contrast temperature, top-k, and top-p sampling.**  `Foundations`  
-Three dials that change how the model picks the next token — trading off 'safe and predictable' against 'creative and varied'.  
+**Q: What does the temperature dial control, and what happens at 0 versus above 1?**  `Foundations`  
+Temperature stretches or squashes the odds before sampling: you divide the logits by it.  Below 1, the gaps between options grow, the top word dominates, and text stays focused and safe.  
 
-**Q — What loss does next-token prediction use, and what is it measuring?**  `Foundations`  
-The model is trained with cross-entropy loss, which measures how surprised it was by the real next word — less surprise means lower loss.  
+**Q: What does cross-entropy loss actually measure, and how is it computed at a single position?**  `Foundations`  
+At one position the model outputs a logits vector, one raw score per word in the vocabulary, and a softmax turns those scores into probabilities that sum to 1.  You look up the probability it assigned to the one word that truly came next, take its negative log, and that is the loss for that step.  
 
-**Q — Why did transformers replace RNNs/LSTMs?**  `Foundations`  
-RNNs read text one word at a time and forget long-range detail; transformers read the whole sequence at once with attention, so they're faster to train and better at long distances.  
+**Q: What's the fundamental difference in how an RNN and a transformer read a sequence?**  `Foundations`  
+An RNN reads sequentially, one token at a time, updating a single running hidden state that carries everything it knows about the past forward.  A transformer reads the whole sequence at once and uses self-attention, so any token can look directly at any other, regardless of distance.  
 
-**Q — What's the difference between encoder, decoder, and encoder-decoder models?**  `Foundations`  
-Encoder models __understand__ it (BERT), decoder models generate left-to-right (GPT), and encoder-decoder models do both (T5) — modern LLMs are almost all decoder-only.  
+**Q: What are the three architecture families, and their poster-child models?**  `Foundations`  
+There are three families.  Encoder-only models like BERT, RoBERTa, and DeBERTa read bidirectionally and are built for understanding: classification, tagging, embeddings.  
 
-**Q — Compare RoPE, ALiBi, and learned positional encodings.**  `Foundations`  
-There are several ways to tell a transformer word order: fixed sinusoidal, learned embeddings, RoPE (__rotation__), and ALiBi (distance penalty).  RoPE is the 2026 default.  
+**Q: Why does a transformer need positional encoding at all?**  `Foundations`  
+A transformer processes every token in parallel, which is what makes it fast, and it means raw attention sees a bag of vectors with no sense of slot.  Shuffle the words and you get the identical result, so "dog bites man" and "man bites dog" are indistinguishable.  
 
-**Q — What do residual connections and normalization do, and why pre-norm?**  `Foundations`  
-Residual connections add a layer's input back to its output so signals survive deep stacks; normalization keeps the numbers stable.  Modern models normalize *before* each sublayer (pre-norm) with RMSNorm.  
+**Q: What do residual connections and normalization each do to keep a deep transformer trainable?**  `Foundations`  
+A residual connection computes x + f(x) instead of just f(x), so the original signal is always carried forward.  Going forward it reaches deep layers without fading, and going backward the gradient gets a clean path home, which sidesteps the vanishing gradient problem.  
 
-**Q — Why did LLMs move from ReLU to GELU and SwiGLU?**  `Foundations`  
-Activation functions add the __non-linearity__ that lets networks learn complex patterns.  LLMs moved from ReLU to smoother GELU, and now to SwiGLU in the feed-forward layers.  
+**Q: What role does an activation function play, and what happens to stacked layers without any non-linearity?**  `Foundations`  
+An activation function adds non-linearity between layers.  Without it, stacking layers buys you nothing, because a chain of linear multiply-and-add layers collapses into a single linear layer, one straight line with no extra expressive power no matter how deep you go.  
 
-**Q — Compare greedy, beam search, sampling, and speculative decoding.**  `Foundations`  
-At each step the model scores every possible next word (logits).  Decoding is the rule for turning those scores into the one word it actually writes — always grab the top pick, roll a weighted die for variety, or use a helper model to go faster.  
+**Q: At each step the model produces logits. What does a decoding strategy actually decide?**  `Foundations`  
+After the final layer the model hands you logits, one raw score per word in the vocabulary, and softmax turns them into probabilities.  That distribution isn't an answer yet.  
 
-**Q — What's inside a single transformer block?**  `Foundations`  
-One transformer block does two things: attention (words share information) and a FFN (a little network that thinks about each word on its own).  Each is wrapped with a residual connection (a shortcut back to the input) and a step that keeps the numbers steady.  
+**Q: What are the two jobs a single transformer block performs, and which is the only place words share information?**  `Foundations`  
+A block has exactly two sublayers.  Multi-head self-attention lets each token look at the others and pull in context, and it is the only place information moves between positions.  
 
-**Q — What is multi-head attention, and why did GQA/MQA appear?**  `Applied`  
-Multi-head attention runs several readers (heads) over the same sentence at once, so the model can follow several kinds of connections between words at the same time.  GQA and MQA then let those readers share notes to keep memory (the KV cache) from ballooning.  
+**Q: What does running multiple attention heads let the model do that a single reader couldn't?**  `Applied`  
+A single attention pass can only emphasise one pattern at a time.  Multi-head attention slices the vectors into several heads, each with its own Query/Key/Value, and they run in parallel.  
 
-**Q — Why is FlashAttention faster without changing the math?**  `Advanced`  
-FlashAttention computes the exact same attention but in small tiles, so it never writes the huge N×N score matrix to slow memory — making it much faster.  
+**Q: What does FlashAttention compute compared to standard attention, and what does it avoid writing to slow memory?**  `Advanced`  
+It computes the exact same attention output.  It is not an approximation.  
 
-**Q — What are Mamba/SSMs and linear-attention models?**  `Advanced`  
-State Space Models (Mamba) and linear attention replace the transformer's quadratic attention with a mechanism that scales __linearly__ with length — cheaper for very long sequences.  
+**Q: What core problem with transformer attention do SSMs and linear attention set out to fix?**  `Advanced`  
+Transformer attention compares every token to every other token, so compute grows with the square of the sequence length, and the KV cache of stored keys and values grows linearly with length on top of that.  On short text you never notice.  
 
-**Q — How does a Mixture-of-Experts layer reduce compute?**  `Advanced`  
-A Mixture of Experts holds many specialist sub-networks but a router sends each token to only a few — giving huge capacity at a small per-token cost.  
+**Q: What does a Mixture of Experts hold, and how does a router keep the per-token cost low despite huge total capacity?**  `Advanced`  
+An MoE layer holds N separate expert networks, which are ordinary feed-forward blocks, plus a small router.  For each token the router scores the experts and sends it to only the top-k, commonly 2 of 8.  
 
-**Q — How does MoE routing work and why is load balancing hard?**  `Advanced`  
-In Mixture of Experts, a __router__ picks which experts handle each token.  The hard part is load balancing — stopping a few experts from getting all the traffic while others sit idle.  
+**Q: What is the router's job in a Mixture of Experts model, and what does 'top-2' routing mean for cost?**  `Advanced`  
+The router is a tiny layer, usually one linear layer plus a softmax, that scores all the experts for each word-piece and picks the top-k best, very often just the top 2.  Only those 2 experts run and the rest are skipped.  
 
-➡️ **Full answers, diagrams & practice:** [Transformers & Architecture on Skillumen →](https://www.skillumen.com/blog/llm-interview-questions.html)
+➡️ **Full answers, diagrams and practice:** [Transformers & Architecture on Skillumen](https://www.skillumen.com/blog/llm-interview-questions.html)
 
 ---
 
 ## ✍️ Prompting & In-Context Learning
 
-**Q — What is in-context learning and how do prompting techniques exploit it?**  `Foundations`  
-in-context learning means the model picks up a task just from what you put in the prompt — no training needed.  Adding a few worked examples (few-shot) and asking it to reason step by step (chain-of-thought) make its answers far more accurate.  
+**Q: What does in-context learning mean, and what makes it different from fine-tuning?**  `Foundations`  
+In-context learning is a model's ability to do a new task purely from the instructions or examples in the prompt, with no weight updates at all.  Fine-tuning permanently changes the weights on a labelled dataset.  
 
-**Q — What are the key prompt engineering techniques?**  `Applied`  
-A toolkit of prompt patterns: zero-shot, few-shot, chain-of-thought, self-consistency, and tree-of-thoughts — each trading more tokens for __better reasoning__.  
+**Q: Contrast zero-shot and few-shot prompting. When is few-shot the simplest reliable win?**  `Applied`  
+Zero-shot gives the model only the instruction and trusts it to comply.  Few-shot pastes a handful of worked examples first, so the model copies the pattern.  
 
-**Q — A teammate 'improved' a prompt and quietly broke three features. How do you stop that from happening?**  `Applied`  
-Treat prompts like code: prompts as code means version control, regression tests, and an eval gate in CI — so a prompt change is reviewed and tested before it ships, not pushed live on a hunch.  
+**Q: What does treating 'prompts as code' mean in practice, and which engineering habits does it borrow?**  `Applied`  
+It means recognizing that a prompt is program logic written in English and giving it the same discipline as code.  Keep it in version control, in Git or a prompt registry, with a version and a pull-request review.  
 
-➡️ **Full answers, diagrams & practice:** [Prompting & In-Context Learning on Skillumen →](https://www.skillumen.com/blog/llm-interview-questions.html)
+➡️ **Full answers, diagrams and practice:** [Prompting & In-Context Learning on Skillumen](https://www.skillumen.com/blog/llm-interview-questions.html)
 📎 **Related deep-dives:** [Generative AI Interview Questions](https://www.skillumen.com/blog/generative-ai-interview-questions.html)
 
 ---
 
-## 🔎 RAG — Retrieval-Augmented Generation
+## 🔎 RAG (Retrieval-Augmented Generation)
 
-**Q — What problem does RAG solve and how does it work?**  `Applied`  
-RAG lets the model look things up in your documents before answering, so it stays accurate and can use fresh or private information.  
+**Q: What problem does RAG solve about a model's knowledge, and how does it reduce hallucination?**  `Applied`  
+A model's knowledge is frozen at its training cutoff and never included your private data.  So it can't answer about recent events or your own docs, and when pushed it tends to hallucinate a confident guess.  
 
-**Q — How should you chunk documents for RAG?**  `Applied`  
-Chunking means cutting your documents into small pieces the system can search.  If you cut them badly, search fails.  
+**Q: What is chunking in a retrieval system, and why does bad chunking quietly wreck search?**  `Applied`  
+Chunking is cutting your documents into small pieces, embedding each one, and storing them so search can compare a question to one piece at a time.  It quietly decides quality because retrieval matches whole chunks.  
 
-**Q — How do you choose and improve embedding models for retrieval?**  `Applied`  
-The embedding model is the thing that turns text into numbers and decides which pieces count as 'similar' when you search.  Pick one that fits your topic and language.  
+**Q: What job does the embedding model do in a search pipeline, and what does it ultimately decide?**  `Applied`  
+The embedding model reads each piece of text and outputs a fixed-length vector that captures its meaning, placing similar-meaning texts close together.  At query time you embed the question and return the nearest chunks, so the embedding model rather than the search box decides what counts as a match.  
 
-**Q — When do you use RAG vs fine-tuning vs long context?**  `Applied`  
-Three ways to give a model knowledge: RAG (look it up), fine-tuning (bake it in), and long context (paste it in).  They solve different problems and often combine.  
+**Q: What are the three ways to give a model knowledge, and the one-line pitch for each?**  `Applied`  
+There are three tools for three different jobs.  RAG, retrieval-augmented generation, keeps facts outside the model and fetches the relevant ones at question time, so the model looks things up.  
 
-**Q — What techniques improve basic RAG?**  `Applied`  
-Basic RAG (the setup that looks facts up before answering) often grabs the wrong pieces of text.  A few upgrades fix this: __rewriting the search__, HyDE, GraphRAG, and agentic RAG that searches over and over in a loop until it has enough.  
+**Q: What does basic RAG get wrong often enough that advanced RAG exists to fix?**  `Applied`  
+Basic RAG runs one similarity search on the user's raw question and assumes the top-k chunks are right.  In practice the retrieval is what breaks.  
 
-**Q — What is a vector database and how does ANN search work?**  `Applied`  
-A vector database stores embeddings and finds the closest ones to a query almost instantly using ANN tricks like HNSW.  
+**Q: What does a vector database store, and what does it find for a given query?**  `Applied`  
+A vector database stores embeddings, lists of numbers that capture what each piece of text or each image means, as points in a high-dimensional space.  For a query, it embeds the query and returns the nearest neighbours: the stored vectors closest to the query point, which are the items closest in meaning.  
 
-**Q — Why add a reranker and hybrid search to RAG?**  `Applied`  
-First cast a wide net with hybrid search (BM25 keywords + vectors), then a reranker reads each candidate closely and re-sorts for accuracy.  
+**Q: What two-stage idea underlies reranking plus hybrid retrieval?**  `Applied`  
+It's a retrieve-then-rerank pipeline borrowed from classic search.  Stage one casts a wide, cheap net tuned for recall.  
 
-**Q — Plain RAG fails on 'how are these two things connected?' questions. What retrieval upgrades fix that?**  `Applied`  
-Beyond basic chunk-and-search, 2026 retrieval adds graphrag (follow links in a knowledge graph for multi-hop questions), semantic routing (send each query to the right source), and self-reflection (rewrite and retry when results look weak).  
+**Q: Why does standard similarity-based RAG fail on 'how do X and Y relate across three documents?'**  `Applied`  
+Similarity search returns the chunks that look most like the question, which is perfect for a plain "what is X" lookup.  A relational, multi-hop question is different.  
 
-**Q — Your RAG bot gives a wrong answer. How do you evaluate the pipeline and figure out whether it's the retriever or the generator that's broken?**  `Applied`  
-Evaluate RAG in __two layers__: score retrieval and generation separately, because a bad answer can come from fetching the wrong chunks OR from the model misusing good chunks.  Retrieval uses ranking metrics (precision@k, recall@k, MRR, nDCG); generation splits into answer correctness (right vs a reference) and faithfulness (grounded in the chunks).  
+**Q: Why must you score retrieval and generation as two separate layers?**  `Applied`  
+A RAG answer can fail in two independent places, and the final answer looks the same either way.  Retrieval might fetch the wrong chunks.  
 
-➡️ **Full answers, diagrams & practice:** [RAG — Retrieval-Augmented Generation on Skillumen →](https://www.skillumen.com/blog/rag-interview-questions.html)
+➡️ **Full answers, diagrams and practice:** [RAG (Retrieval-Augmented Generation) on Skillumen](https://www.skillumen.com/blog/rag-interview-questions.html)
 📎 **Related deep-dives:** [What is RAG?](https://www.skillumen.com/blog/what-is-rag.html) · [RAG vs Fine-tuning](https://www.skillumen.com/blog/rag-vs-fine-tuning.html)
 
 ---
 
 ## 🎯 Fine-tuning & Alignment
 
-**Q — Distinguish pretraining, SFT, and RLHF.**  `Applied`  
-A model is built in three stages: first it learns language, then it learns to follow instructions, then it learns to match what humans actually prefer.  
+**Q: Name the three stages of building a model and what each one teaches.**  `Applied`  
+There are three stages, in order.  Pretraining has the model read a massive pile of raw text predicting the next token, so it absorbs language, facts, and reasoning, though all it learns to do is continue text.  
 
-**Q — How does DPO differ from classic RLHF?**  `Applied`  
-DPO teaches a model human preferences directly from 'this answer is better than that one' pairs — skipping the separate reward model and reinforcement-learning loop that RLHF needs.  
+**Q: In plain terms, what does DPO learn from, and what two heavy RLHF components does it skip?**  `Applied`  
+DPO (Direct Preference Optimization) learns straight from preference pairs: for each prompt, a chosen answer the raters preferred and a rejected one.  It skips the two heavy pieces of classic RLHF, the separate reward model that scores answers and the reinforcement-learning loop (PPO) that pushes the model toward higher scores.  
 
-**Q — How does LoRA fine-tune a model cheaply?**  `Applied`  
-LoRA freezes the giant base model and trains only tiny add-on matrices, so fine-tuning becomes cheap and you can keep many task-specific versions.  
+**Q: What does LoRA freeze and what does it actually train, and why does that make many task versions cheap?**  `Applied`  
+LoRA freezes the entire base model and trains only a small pair of add-on matrices, B·A, on a few chosen layers.  That is typically well under 1% of the weights.  
 
-**Q — What is QLoRA and why does it matter?**  `Applied`  
-QLoRA is a cheap way to customize a giant model on one GPU.  It keeps the big model frozen and stores it in a tiny __4-bit__ format (quantized means saving each number with far fewer digits), then trains only a few small add-on pieces (LoRA adapters).  
+**Q: What does QLoRA keep frozen and store in 4-bit, and what does it actually train?**  `Applied`  
+QLoRA freezes the entire base model and stores it in 4-bit, using the NF4 format, so the huge part barely uses memory.  The only weights that actually update are the small LoRA adapters bolted on top, typically well under 1% of the parameters, and those train in full precision so learning stays sharp.  
 
-**Q — Compare causal LM, masked LM, and prefix-LM objectives.**  `Applied`  
-How a model is pretrained shapes what it's good at: causal LM (predict the next token) powers generators, masked LM (__fill blanks__) powers understanders, and prefix-LM blends both.  
+**Q: How does the pretraining objective shape what a model is good at?**  `Applied`  
+The objective is the exact prediction task you reward during pretraining, and it quietly decides the model's lifelong strengths.  Causal LM predicts the next token from the past, which builds fluent generators.  
 
-**Q — What is instruction tuning and how does it differ from plain SFT?**  `Applied`  
-Instruction tuning fine-tunes a base model on a wide variety of (instruction to response) tasks so it learns to *follow instructions in general*, not just mimic one dataset.  
+**Q: What does instruction tuning teach a model that plain next-token pretraining does not?**  `Applied`  
+Pretraining only teaches what word comes next, so a base model continues text.  Ask it a question and it may write more questions.  
 
-**Q — What is catastrophic forgetting and how is it mitigated?**  `Applied`  
-Catastrophic forgetting is when fine-tuning a model on new data makes it lose abilities it already had.  PEFT methods like LoRA avoid it by leaving the base weights untouched.  
+**Q: What is catastrophic forgetting, and when does it typically strike a model?**  `Applied`  
+It is when training a model on new data makes it lose abilities it already had.  It typically strikes during fine-tuning, especially on a narrow dataset.  
 
-**Q — What is knowledge distillation?**  `Applied`  
-Knowledge distillation trains a small __student__ model to copy a large teacher model's outputs — getting most of the quality at a fraction of the size and cost.  
+**Q: In plain terms, what is knowledge distillation trying to achieve with a student and a teacher model?**  `Applied`  
+Distillation takes a large, capable but expensive teacher model and uses it to train a small student model.  You run the frozen teacher over lots of inputs and train the student to reproduce its outputs.  
 
-**Q — Walk through full RLHF end to end.**  `Applied`  
-RLHF first trains a scorer (a reward model) that learns what people like, then gently nudges the model (PPO) to earn higher scores — while a leash (KL divergence) keeps it from wandering off into nonsense to game the score.  
+**Q: What are the three stages of RLHF, from preference data to the final model?**  `Applied`  
+Three stages.  First, collect preferences: humans compare pairs of answers to the same prompt and pick the better one.  
 
-**Q — What is RLVR and why did it change LLM training?**  `Advanced`  
-RLVR (Reinforcement Learning from Verifiable Rewards) trains models on problems where the answer can be __automatically checked__ — like math or code — so the reward is objective, not a human guess.  
+**Q: What makes a reward 'verifiable' in RLVR, and on what kinds of problems does that apply?**  `Advanced`  
+A reward is verifiable when a program can decide whether the answer is correct, with no human opinion involved, yielding a clean 1 or 0.  That applies wherever correct is well defined.  
 
-**Q — What is Constitutional AI and RLAIF?**  `Advanced`  
-Constitutional AI aligns a model using a written set of principles (a 'constitution') and __AI-generated feedback__ (RLAIF) instead of relying only on human labels.  
+**Q: What is a 'constitution' in Constitutional AI, and how does the model use it?**  `Advanced`  
+A constitution is a short, plain-language list of principles: be helpful, avoid harmful advice, be honest about uncertainty.  Anthropic's draws some of its lines from sources like the UN Declaration of Human Rights.  
 
-**Q — Why is pretraining data quality and synthetic data so important?**  `Advanced`  
-A model is only as good as its data.  2026 training leans on careful curation, deduplication, and filtering, plus large amounts of __synthetic data__ — including generated reasoning traces.  
+**Q: Why is 'a model is only as good as its data' true when model size is held fixed?**  `Advanced`  
+Two models of the same size have the same capacity to fill, and what fills it is the data.  Every token costs the same compute to train on, so a duplicated or spammy token wastes that budget while a clean, information-rich one teaches something.  
 
-**Q — What is machine unlearning?**  `Advanced`  
-Machine unlearning makes a trained model forget specific data — for privacy ('right to be forgotten'), copyright, or safety — without retraining from scratch.  
+**Q: What is machine unlearning, and which pressures make it necessary?**  `Advanced`  
+Machine unlearning makes a trained model behave as if specific data was never in its training set, without retraining from scratch.  Three pressures force it: privacy laws like GDPR's "right to be forgotten," copyright holders whose work was scraped, and safety, meaning removal of hazardous or unsafe knowledge.  
 
-➡️ **Full answers, diagrams & practice:** [Fine-tuning & Alignment on Skillumen →](https://www.skillumen.com/blog/rag-vs-fine-tuning.html)
+➡️ **Full answers, diagrams and practice:** [Fine-tuning & Alignment on Skillumen](https://www.skillumen.com/blog/rag-vs-fine-tuning.html)
 📎 **Related deep-dives:** [RAG Interview Questions](https://www.skillumen.com/blog/rag-interview-questions.html)
 
 ---
 
 ## 🤖 Agents & Tool Use
 
-**Q — How does an LLM agent work, and what is the ReAct loop?**  `Applied`  
-An agent works in a loop: think, call a tool (tool calling), look at the result, and repeat until it can answer — known as the ReAct pattern.  
+**Q: What is the repeating loop an agent runs, and when does it stop?**  `Applied`  
+An agent runs the ReAct loop: a Thought where it reasons about what to do next, an Action where it calls a tool, and an Observation where the result is fed back.  It keeps cycling through think, act, observe, building up what it has learned, and it stops when it has gathered enough to write a final answer, or when a safety cap like a step limit forces it to.  
 
-**Q — What is LangChain and how do you build a RAG chain with it?**  `Applied`  
-LangChain is a toolkit that snaps models, prompts, retrievers, and parsers together into reusable chains — and into agents via LangGraph.  
+**Q: What does LangChain give you that saves writing custom glue code?**  `Applied`  
+It gives you standard, swappable building blocks: chat models, prompt templates, output parsers, memory, retrievers, and tools.  They all speak the same runnable interface, taking an input and returning an output the same way.  
 
-**Q — What problem does MCP solve and how is it structured?**  `Advanced`  
-MCP is a shared standard that lets any AI app connect to any tool or data source — without writing custom glue code for every combination.  
+**Q: What problem does MCP solve?**  `Advanced`  
+Before MCP, every AI app needed its own bespoke connector to every tool.  With N apps and M tools that is N×M one-off integrations to build and maintain, and a connector for one app was useless to the next.  
 
-**Q — How do agents remember things beyond the context window?**  `Applied`  
-Agents fake long-term memory with external storage: __short-term__ (recent turns), summary memory, and long-term memory in a vector store that's retrieved when relevant.  
+**Q: Why do agents need a memory system at all? Doesn't the model remember?**  `Applied`  
+A chat model is stateless between calls.  It carries nothing over on its own.  
 
-**Q — What are common multi-agent patterns?**  `Applied`  
-For a big task, split the work across __specialized agents__ instead of one agent doing it all.  A planner breaks the job into steps, workers do the steps, and an orchestrator hands each step to the right agent.  
+**Q: What's the core idea of multi-agent orchestration versus one agent doing everything?**  `Applied`  
+Instead of one agent trying to plan, research, write, and check all at once, you split the work across specialized agents, each with a narrow job, its own instructions, and only the tools it needs, and you add a coordinator to route between them.  A single agent bloats its prompt and loses focus as the task grows, and one early mistake poisons everything after.  
 
-**Q — Beyond calling an LLM in a loop, what does the 2026 agent stack actually run on?**  `Applied`  
-Production agents are built on named frameworks — langgraph for stateful agent loops, llamaindex for data/retrieval agents — and increasingly talk to each other over open protocols: mcp (agent to tools) and a2a (agent to agent).  
+**Q: What two categories should a 2026 LLM engineer tell apart, and which tools sit in each?**  `Applied`  
+There are two layers.  Orchestration frameworks run the agent's own steps and state.  
 
-**Q — Your agent works in testing but throws errors under real traffic. What's the most common cause — and the fix?**  `Applied`  
-In production, most LLM failures aren't the model being wrong — they're rate limits and capacity errors.  Handling them with retries, exponential backoff and fallbacks is what makes an agent reliable.  
+**Q: In production, what actually causes most agent failures: the model or the plumbing around it?**  `Applied`  
+The plumbing, overwhelmingly.  Large-scale telemetry shows roughly 5% of model calls fail in production, and about 60% of those are capacity and rate-limit errors, the 429 "too many requests" responses.  
 
-**Q — Beyond chat, 2026 agents talk out loud and click around screens. What's new about building those?**  `Advanced`  
-Voice agents chain speech-to-text → LLM → text-to-speech (where latency is everything), while computer-use and browser agents act by clicking and typing on real screens — both add real-time and reliability challenges beyond text chat.  
+**Q: What are the stages of a voice agent, and which property dominates the design?**  `Advanced`  
+A classic voice agent is a chain: speech-to-text turns the mic into words, the LLM produces a reply, and text-to-speech speaks it back, with voice activity detection (VAD) deciding when you've stopped talking.  The dominant constraint is end-to-end latency.  
 
-**Q — Everyone watches their agents in production. Why is that not the same as knowing they work?**  `Applied`  
-Watching an agent (observability) tells you what happened; agent evaluation tells you whether it was right.  Most teams have the first and skip the second — and evaluating an agent means scoring its whole trajectory, not just the final answer.  
+**Q: What's the difference between agent observability and agent evaluation, and which do most teams skip?**  `Applied`  
+Observability is descriptive: logs and traces of every step, tool call, and token.  It tells you what happened and is great for debugging.  
 
-➡️ **Full answers, diagrams & practice:** [Agents & Tool Use on Skillumen →](https://www.skillumen.com/blog/agentic-ai-interview-questions.html)
+➡️ **Full answers, diagrams and practice:** [Agents & Tool Use on Skillumen](https://www.skillumen.com/blog/agentic-ai-interview-questions.html)
 📎 **Related deep-dives:** [LangGraph vs MCP](https://www.skillumen.com/blog/langgraph-vs-mcp.html)
 
 ---
 
 ## 📊 Evaluation
 
-**Q — How do you evaluate an LLM app, and what is LLM-as-judge?**  `Applied`  
-Testing an LLM app happens at three levels: standard exams every model takes (benchmarks), your own quiz built from real tasks, and a strong model acting as grader (LLM-as-judge).  For a RAG app, RAGAS also checks faithfulness — whether the answer really sticks to the documents it was given.  
+**Q: What are the three levels of evaluating an LLM app?**  `Applied`  
+There are three levels.  Public benchmarks like MMLU, HumanEval, and GSM8K score the raw model against everyone, and they are good for picking a model.  
 
-**Q — What metrics measure LLM output quality?**  `Applied`  
-There's no single score for 'good' — you pick the __metric that fits the task__.  perplexity checks how smoothly it reads, BLEU/ROUGE check how many words match a human answer, BERTScore checks if the meaning matches, pass@k checks if code actually runs, and LLM-as-judge rates open-ended answers like chat.  
+**Q: Why is there no single score for a good LLM output, and how do you choose a metric?**  `Applied`  
+Language is open-ended.  The same correct answer can be written a hundred ways, so no one number captures "good".  
 
-**Q — What do common LLM benchmarks measure, and what are their limits?**  `Advanced`  
-Benchmarks like MMLU, GPQA, HumanEval, SWE-bench, and AIME each test __something specific__.  Know what they measure — and their limits (contamination, saturation, gaming).  
+**Q: What specific capability does each of MMLU, GPQA, HumanEval, SWE-bench, and AIME actually measure?**  `Advanced`  
+MMLU is a broad 57-subject multiple-choice quiz that measures general knowledge.  GPQA asks hard graduate-level science questions that experts themselves find tricky.  
 
-**Q — Your RAG app gave a wrong answer. Before you touch anything: is the bug in the prompt, the model, retrieval, the schema, or the tool — and how do you prove which?**  `Applied`  
-A bad LLM output is a symptom, not a diagnosis.  Isolate the broken layer — prompt, model, retrieval, schema/parser, or tool — by reading the symptom, then fix the __cheapest__ layer first.  
+**Q: Why is a bad LLM output called a symptom rather than a diagnosis, and what's the overall approach?**  `Applied`  
+The same visible failure, a bad answer, can come from any layer of the pipeline: the prompt, the model, retrieval, the schema and parser, or a tool call.  The screen shows you the end of the pipeline, never the origin.  
 
-**Q — Why do LLMs hallucinate and how do you reduce it?**  `Applied`  
-A hallucination is confident, fluent text that's __factually wrong__.  It happens because models predict plausible words, not truth — mitigations include RAG, better prompts, and verification.  
+**Q: What exactly is a hallucination, and what makes it dangerous to a reader?**  `Applied`  
+A hallucination is output that is stated with total confidence and is flatly untrue.  What makes it dangerous is that it arrives in the same fluent, assured tone as a correct answer, complete with plausible names, dates, or citations, so nothing in the wording warns the reader.  
 
-➡️ **Full answers, diagrams & practice:** [Evaluation on Skillumen →](https://www.skillumen.com/blog/llm-interview-questions.html)
+➡️ **Full answers, diagrams and practice:** [Evaluation on Skillumen](https://www.skillumen.com/blog/llm-interview-questions.html)
 
 ---
 
 ## 🚀 Inference & Serving
 
-**Q — What is the KV cache and why does it matter for inference?**  `Applied`  
-The KV cache saves the work the model already did on earlier tokens, so generating each new token is fast instead of redoing everything.  
+**Q: What is the KV cache and what wasteful work does it eliminate?**  `Applied`  
+The KV cache stores the Key and Value vectors of every token the model has already seen.  To generate the next token, attention has to look back at the K and V of all earlier tokens, and those never change once computed.  
 
-**Q — What is quantization and what's the trade-off?**  `Applied`  
-Quantization stores the model's numbers using fewer bits, making it much smaller and faster to run — for a small drop in accuracy.  
+**Q: What does quantization change about how a model's numbers are stored, and what do you trade for it?**  `Applied`  
+Quantization stores each weight using fewer bits, for example going from 16-bit fp16 down to 8-bit or 4-bit integers.  It removes no weights and leaves the architecture alone.  
 
-**Q — How does speculative decoding speed up generation?**  `Applied`  
-Speculative decoding uses a small fast __draft__ model to guess several tokens ahead, then the big model verifies them all in one pass — same output, much faster.  
+**Q: What speed bottleneck in normal generation does speculative decoding attack?**  `Applied`  
+Autoregressive generation produces one token per full forward pass, and each token depends on the previous one, so you can't parallelize across the sequence.  The real cost sits in loading the giant model's weights from memory on every single step, which makes generation memory-bound and leaves the GPU half-idle.  
 
-**Q — How does vLLM serve LLMs with high throughput?**  `Advanced`  
-vLLM is a fast serving engine: PagedAttention manages the KV cache efficiently and continuous batching keeps the GPU busy — together giving far higher throughput.  
+**Q: What two techniques make vLLM a high-throughput serving engine?**  `Advanced`  
+Two things working together.  PagedAttention stores the KV cache in small fixed-size pages handed out on demand, the way an operating system hands out virtual memory, so it barely wastes memory and fits many more requests.  
 
-**Q — At scale, serving an LLM isn't just 'run vLLM'. What actually decides your speed and cost?**  `Advanced`  
-Production serving is shaped by the KV cache.  The two generation phases — prefill (compute-heavy) and decode (memory-heavy) — stress GPUs differently, so 2026 stacks split them onto separate pools (disaggregation) and route requests by cached prefix.  
+**Q: How does the KV cache shape production serving, and what two generation phases does it split into?**  `Advanced`  
+The KV cache is the model's running memory of everything it has read, one entry per token.  It dominates serving because it grows with context and eats GPU memory.  
 
-**Q — You've got a model and a working RAG chain. What actually turns that into a production service?**  `Advanced`  
-Shipping an LLM feature means wrapping inference in an API with real telemetry (tokens, latency, cost), a local dev loop, experiment tracking, and observability — the unglamorous stack that turns 'works on my laptop' into 'works for users'.  
+**Q: What does the serving stack add around raw inference to make it a product?**  `Advanced`  
+Raw inference is a notebook call.  A product wraps that call in an API, usually FastAPI, with telemetry on every request: tokens, latency, and cost, tagged by feature.  
 
-**Q — What are the prefill and decode phases, and why does batching matter?**  `Advanced`  
-Answering a prompt happens in two steps.  First __prefill__: the model reads your whole prompt at once.  
+**Q: What are the two phases of answering a prompt, and what is each doing?**  `Advanced`  
+There are two.  Prefill is the model reading your entire prompt in a single parallel pass and storing a running summary of every token in the KV cache.  
 
-**Q — Your product now calls five different models across three providers. How do you keep that from becoming a mess?**  `Advanced`  
-A model gateway puts one API in front of every provider — with retries, fallbacks, keys and spend limits in one place — so running a fleet of models stays sane.  
+**Q: What problem does a model gateway solve once you're running many providers instead of one model?**  `Advanced`  
+Once you run a fleet with a cheap model for classification, a strong one for reasoning, and a private one for sensitive data, wiring each provider's SDK directly into your app means every call site knows about auth, quirks, and failure modes for three different vendors.  A gateway is a thin service that presents one consistent API for all of them.  
 
-**Q — What is model routing and cascading?**  `Advanced`  
-Model routing sends each request to the __cheapest model__ that can handle it; cascades try a small model first and escalate to a bigger one only if needed — cutting cost without losing quality.  
+**Q: What does model routing do to each request, and how does a cascade differ?**  `Advanced`  
+Model routing sends each incoming request to the cheapest model that can still answer it well.  It makes the decision up front, before the real answer, using signals like predicted difficulty or task type.  
 
-**Q — Why are small and on-device language models important?**  `Advanced`  
-Small language models (SLMs, ~1-8B) run on phones and laptops — giving privacy, low latency, offline use, and __near-zero cost__ — and 2026 distillation makes them surprisingly capable.  
+**Q: What defines a small language model (SLM), and what four benefits come from running one on-device?**  `Advanced`  
+An SLM is a language model small enough to run directly on a phone or laptop, roughly 1-8 billion parameters, with no data centre involved.  Running on-device gives four wins at once.  
 
-**Q — Your app sends the same long system prompt on every call. How do you stop paying to re-read it each time?**  `Applied`  
-Prompt caching lets the model keep the unchanging start of your prompt ready, so repeat calls skip re-processing those tokens — cutting both cost and the wait for the first word.  
+**Q: What does prompt caching reuse across requests, and how does that cut latency and cost?**  `Applied`  
+It reuses the model's processed state for the fixed prefix of your prompt, meaning the system prompt, the rules, the examples, any long document that stays the same call after call.  The first call processes it and stores that work.  
 
-**Q — Design a customer-support RAG bot for 1M docs at scale — name the key components.**  `Advanced`  
-A production RAG system has two halves: an offline phase that indexes your documents, and an online phase that answers queries — wrapped in guardrails and monitoring.  
+**Q: Design a customer-support RAG bot over a million documents. What's the top-level architecture?**  `Advanced`  
+I'd split it in two.  The offline ingestion half is a batch job: load the docs, chunk them, run each chunk through an embedding model, and store the vectors in a sharded vector database with an ANN index.  
 
-➡️ **Full answers, diagrams & practice:** [Inference & Serving on Skillumen →](https://www.skillumen.com/blog/llm-system-design-interview.html)
+➡️ **Full answers, diagrams and practice:** [Inference & Serving on Skillumen](https://www.skillumen.com/blog/llm-system-design-interview.html)
 
 ---
 
 ## 🛠️ Production, Ops & Cost
 
-**Q — What production techniques cut LLM cost and latency?**  `Advanced`  
-The everyday engineering moves that make a live LLM app cheap, fast, and dependable: reusing past work (caching), showing words as they're typed (streaming), sending easy questions to a cheaper model (model routing), and having a backup when a provider fails (fallbacks with retries).  
+**Q: In plain terms, what four everyday LLMOps moves make a live app cheap, fast, and dependable?**  `Advanced`  
+There are four everyday moves.  Caching cuts cost: prompt caching reuses the model's work on a repeated prefix, and a semantic cache returns a saved answer for a repeat question without any model call.  
 
-**Q — Why do LLM apps need observability, and what do tools capture?**  `Advanced`  
-observability keeps a full recording of what your app did — every step, plus how long it took (latency) and what it cost.  So when something goes wrong deep inside a long chain of steps, you can replay it and find the problem.  
+**Q: What is LLM observability, and why isn't ordinary monitoring enough?**  `Advanced`  
+Traditional monitoring watches error rates, response times, and CPU on simple request/response servers.  LLM apps break that model.  
 
-**Q — How do you monitor LLM apps and detect drift in production?**  `Advanced`  
-Drift is when inputs or model behaviour change over time, silently degrading quality.  Monitoring tracks inputs, outputs, quality signals, cost, and latency to catch it early.  
+**Q: What is drift, and why does it silently degrade a deployed model's quality without any code change?**  `Advanced`  
+Drift is the slow slide in quality that happens after launch, with no change to your code.  The world keeps moving: the questions people ask shift, your provider can update the model under you, and answers gradually rot.  
 
-**Q — How do you estimate and control LLM costs?**  `Advanced`  
-LLM cost is driven by __tokens__: you pay per input + output token.  Estimating and cutting cost means counting tokens, caching, routing to cheaper models, and trimming prompts.  
+**Q: What drives LLM cost, and why are input and output tokens billed separately with output usually pricier?**  `Advanced`  
+Cost is driven by tokens.  The bill is roughly input tokens plus output tokens, each multiplied by its per-token price.  
 
-**Q — Your LLM feature cost pennies in testing and thousands the month it launched. How do you stay in control?**  `Advanced`  
-LLM finops treats token spend like a budget: attribute cost per feature and team, cut it with caching and cheaper models, and enforce hard daily caps with a circuit breaker so a bug or spike can't run up a giant bill.  
+**Q: What is LLM FinOps, and what three moves does it combine?**  `Advanced`  
+LLM FinOps is the discipline of treating token spend like a managed budget so it never surprises you.  It combines three moves.  
 
-**Q — Design the backend for a streaming LLM chatbot. How do you keep it fast, safe, and from blowing your API budget?**  `Advanced`  
-An LLM app is still a normal web service.  You expose a versioned REST API with typed contracts, ship it as a Docker image, keep provider keys out of code, and — the part interviewers love — enforce YOUR OWN rate limit per user so nobody drains your provider budget.  
+**Q: Before any AI is involved, what makes an LLM app 'just a normal web service', and what does /v1 buy you?**  `Advanced`  
+Strip out the model and it is a standard REST service.  The untrusted browser calls your endpoint, which holds the key, checks auth, meters usage, and logs.  
 
-**Q — An interviewer asks: "A user closes your chat app and comes back tomorrow expecting their conversation. They also uploaded a 40-page PDF. Where does all of this live, and why not just keep it in the model's context?**  `Advanced`  
-The model's context window is wiped after every reply, so real chat state lives in stores you choose by job: Postgres for durable history (users/conversations/messages in a transaction), Redis for fast throwaway state (TTL caches, sessions, rate limiting counters, queues), and object storage with presigned URLs for uploaded PDFs and logs.  
+**Q: Why not just keep the conversation in the model's context window?**  `Advanced`  
+The context window gets cleared after every response, and every token in it is billed again on the next request, so it cannot serve as storage.  You would pay to re-send the whole history each turn and still lose it.  
 
-**Q — Your LLM app needs to handle 1000 users at once, stream answers to their browsers live, and process uploaded PDFs in the background. What's the backend shape?**  `Advanced`  
-Most LLM work is __waiting__ on the model API, so one async process can hold ~1000 users at once.  Short live answers go out as a token stream over SSE; slow work (parsing PDFs) is handed to a task queue and a worker, and the client polls for the result instead of holding the HTTP connection open.  
+**Q: Why can a single async process hold roughly 1000 concurrent LLM users?**  `Advanced`  
+Serving an LLM is network-bound.  A request spends almost all its time waiting on the model API and near-zero time using CPU.  
 
-**Q — How would you deploy an LLM app to production?**  `Advanced`  
-Deploying an LLM app is mostly normal web deployment: containerize your FastAPI+RAG service, push the image to a host, and inject config with env vars and secrets.  The twist is that heavy GPU inference scales and costs differently, so it lives behind a hosted API or a separate GPU pool while your stateless app runs cheap and autoscales.  
+**Q: Which parts of deploying an LLM app are just normal web deployment, and what's the one twist?**  `Advanced`  
+Almost all of it is ordinary web work.  You containerize the FastAPI and RAG service, push the image to a host, inject config with env vars and secrets, run stateless replicas behind a load balancer, and keep state in a managed DB and object storage.  
 
-**Q — Your team just fine-tuned a new model. How do you ship it to production without risking an outage or a silent quality drop?**  `Advanced`  
-You gate the release in CI/CD and roll it out gradually.  Automated eval gates run in CI and block the merge if quality drops; then a canary or blue-green deploy exposes the new build to a sliver of traffic, and a one-click rollback snaps back if anything breaks.  
+**Q: How does an automated eval gate in CI block a bad release, and what does it compare against?**  `Advanced`  
+A GitHub Actions workflow triggers on push: build, unit and integration tests, then the eval gate.  The gate scores the candidate on a fixed golden set, often with an LLM judge on a pinned seed for repeatability, and compares to the stored baseline, the last prod score.  
 
-**Q — Your RAG app serves 500 companies from one vector index. How do you make sure a user from Company A can never retrieve Company B's documents?**  `Advanced`  
-First you prove who the user is (authentication) and what they're allowed to see (authorization/RBAC).  Then the real trick: access-controlled retrieval.  
+**Q: What's the difference between authentication and authorization, and why does getting identity wrong undermine every later check?**  `Advanced`  
+Authentication answers who you are: you verify a signed JWT or a session cookie from login.  Authorization answers what you're allowed to do, usually through RBAC roles like admin, member, and viewer.  
 
-**Q — How do you force valid JSON out of an LLM and guard inputs/outputs?**  `Applied`  
-structured output makes the model fill in a fixed form instead of writing a paragraph, so your code always finds each value in the same spot (the form is a Pydantic schema; tools like Instructor or Outlines enforce it).  guardrails are the safety checks that block bad or sneaky input and output.  
+**Q: What does structured output force the model to do instead of writing a paragraph, and why does that help your code?**  `Applied`  
+It forces the model to return a fixed shape, usually JSON with named fields and known types, instead of free prose.  Your code can then rely on each value being in the same place with the same type, so you skip the fragile string-parsing and regex that break the moment the model rephrases.  
 
-**Q — You're shipping a feature on top of an LLM API. Walk me through everything between 'user types a question' and 'answer streams back' — and what breaks in production.**  `Applied`  
-Calling an LLM API well means shaping the message roles and model parameters, counting tokens before you send, and wrapping the call in retries with exponential backoff plus timeouts.  Production adds streaming to the frontend, provider fallback across OpenAI/Anthropic/Gemini, and cost tracking from the usage block.  
+**Q: What are the three message roles, and why resend the whole history every call?**  `Applied`  
+A call is a list of messages with three roles.  system sets the durable rules and format, user is the request, and assistant is prior model turns you replay for context.  
 
-➡️ **Full answers, diagrams & practice:** [Production, Ops & Cost on Skillumen →](https://www.skillumen.com/blog/llm-system-design-interview.html)
+➡️ **Full answers, diagrams and practice:** [Production, Ops & Cost on Skillumen](https://www.skillumen.com/blog/llm-system-design-interview.html)
 
 ---
 
 ## 🛡️ Safety & Security
 
-**Q — What is prompt injection and how do you defend against it?**  `Advanced`  
-Prompt injection is when untrusted text hijacks the model's instructions — e. g.  
+**Q: What is prompt injection, and why is untrusted text like a web page able to hijack the model's instructions?**  `Advanced`  
+Prompt injection is when text the model reads gets it to follow the attacker's orders instead of yours.  The root cause is that a model reads its prompt as one flat sequence of tokens.  
 
-**Q — What is red-teaming and how are LLMs made safer?**  `Advanced`  
-Red-teaming means attacking your own model on purpose — trying to make it say something harmful — so you catch the holes before real users do.  Real safety then stacks layers on top: training the model to refuse, filtering what goes in and out, and boxing in what its tools can touch.  
+**Q: What is red-teaming a model, and why attack your own system on purpose before shipping?**  `Advanced`  
+Red-teaming means deliberately playing the attacker against your own model to make it misbehave.  You try jailbreaks that talk it out of its rules, requests for harmful instructions, and attempts to leak private data.  
 
-**Q — Where does LLM bias come from and how is it measured?**  `Advanced`  
-LLMs absorb biases from their training data — stereotypes, skew, toxicity.  Managing it means __measuring__ across groups, mitigating in data and training, and filtering outputs.  
+**Q: Where does bias in an LLM come from, and why can it amplify rather than just reflect?**  `Advanced`  
+It comes from the training data.  A model learns to write by reading trillions of words of human text, which is full of stereotypes and skew: nurse paired with she, English and Western views as the default, plain toxicity.  
 
-**Q — How do you handle privacy and data governance with LLMs?**  `Advanced`  
-LLMs can leak or memorize sensitive data, so production systems __redact PII__, control what's sent to third-party APIs, log carefully, and follow data-governance rules (GDPR, etc. ).  
+**Q: In plain terms, what are the three ways an LLM system can leak or expose sensitive user data?**  `Advanced`  
+Three places.  One: the model can memorize a rare string from training, say a phone number or address that appeared once, and regurgitate it later.  
 
-**Q — Your agent can call tools and read web pages. What's the security risk almost everyone underestimates?**  `Advanced`  
-Once an agent can act on the world, anything it reads — a tool's output, a web page, another agent — can carry hidden instructions.  tool poisoning and indirect prompt injection are the new attack surface, and the fix is to never trust AI-mediated input.  
+**Q: Why does letting an agent take actions turn any text it reads into a potential attack?**  `Advanced`  
+Normal software keeps data and commands separate.  An agent blurs that line: it reads text and then decides to act on it, calling a tool, sending email, or running code.  
 
-**Q — You built an agent that writes and runs SQL against your production database. Your interviewer asks: how do you keep it from leaking or wrecking data?**  `Advanced`  
-Treat every tool argument the model produces as __untrusted__ input.  Lock the database itself down to a read-only least-privilege user, allow-list SELECT-only queries, bind values with parameterized queries (never string-concat model output), force tenant filters in your code, and cap rows plus set a timeout.  
+**Q: Why treat every SQL argument the model produces as untrusted, and what's the mindset shift?**  `Advanced`  
+The model can be wrong, or steered by a prompt injection hidden in data it reads, and it sits between the user's intent and a real database action.  It's the same lesson as never trusting user input in web security.  
 
-**Q — Your agent writes and runs Python to answer questions. What's the obvious thing that can go very wrong?**  `Advanced`  
-If an agent can generate and execute code, that code can delete files, leak secrets, or attack your network.  Sandboxing runs it in an isolated, disposable environment with tight limits — so a bad snippet can't touch your real system.  
+**Q: What does a sandbox give agent-generated code, and why is that isolation necessary before running it?**  `Advanced`  
+A sandbox gives each execution a fresh, isolated environment that starts with nothing valuable.  There's no host filesystem, no secrets, tight CPU, memory, and time limits, and the whole box is destroyed after the run.  
 
-➡️ **Full answers, diagrams & practice:** [Safety & Security on Skillumen →](https://www.skillumen.com/blog/ai-engineer-interview-questions.html)
+➡️ **Full answers, diagrams and practice:** [Safety & Security on Skillumen](https://www.skillumen.com/blog/ai-engineer-interview-questions.html)
 
 ---
 
 ## 🔬 Scaling & the Research Frontier
 
-**Q — What did Chinchilla reveal about compute-optimal training?**  `Advanced`  
-For a fixed amount of compute, the model size and the amount of training data should grow together — and many famous early models were actually undertrained.  
+**Q: What do scaling laws actually say?**  `Advanced`  
+A scaling law is a measured relationship.  Plot a model's loss against the compute you spend and you get a smooth, gently falling line, nearly straight on a log-log chart.  
 
-**Q — How do reasoning models (o-series, R1) differ from normal LLMs?**  `Advanced`  
-Reasoning models (OpenAI o-series, DeepSeek-R1) are trained to think before answering — generating a long internal chain of thought — trading more compute at inference for far better math, code, and logic.  
+**Q: What do reasoning models do before answering that a normal model does not?**  `Advanced`  
+A normal model maps your question straight to an answer in a single pass.  A reasoning model first generates a long hidden chain-of-thought: it tries an approach, checks whether it works, catches mistakes, backtracks, and only then commits to a final answer.  
 
-**Q — What is test-time (inference-time) compute scaling?**  `Advanced`  
-Test-time compute means spending more computation when answering — not just when training — to get better results: longer reasoning, many samples, or search over candidates.  
+**Q: What does 'test-time compute' actually mean, and how does it differ from the compute spent during training?**  `Advanced`  
+Training compute is the one-time cost of building the model, running gradient descent over huge data to set its weights.  Test-time compute, also called inference-time scaling, is extra computation spent when the model answers a real question, with the weights frozen.  
 
-**Q — What are pruning and sparsity in LLMs?**  `Advanced`  
-Pruning removes weights or whole components that barely matter, making a model smaller and faster.  Sparsity means most weights are zero — skipped at compute time.  
+**Q: In plain terms, what does pruning do to a trained model, and what does it mean for a model to be 'sparse'?**  `Advanced`  
+A trained model is over-provisioned.  Lots of its weights are near zero and contribute almost nothing.  
 
-**Q — How do multimodal LLMs (vision-language models) work?**  `Advanced`  
-Multimodal models handle images (and audio/video) alongside text by encoding each into the same token space, so the LLM can reason across them — e. g.  
+**Q: What does a multimodal LLM let you do that a text-only model can't, in one sentence?**  `Advanced`  
+A multimodal LLM, also called a vision-language model, can take in an image, and often audio or video, alongside your text and reason about them together.  So it can answer questions about a picture, read a screenshot, or describe a chart, all in one conversation.  
 
-**Q — What are diffusion language models?**  `Advanced`  
-Instead of writing one word after another, Diffusion LLMs start with a whole draft of blanks and sharpen every position __at once__, over a few passes.  Because the work happens in parallel, text can arrive in a burst, not a trickle — much lower latency.  
+**Q: How does a diffusion LLM generate text differently from a standard autoregressive model?**  `Advanced`  
+An autoregressive model predicts one token from the ones before it, strictly left to right, so it takes one sequential pass per token.  A diffusion model is non-autoregressive: it starts from a fully masked or noisy sequence and denoises all positions in parallel, refining the whole draft over a handful of passes.  
 
-**Q — What are the main LLM families in 2026 and their trade-offs?**  `Advanced`  
-Three camps: __closed frontier__ (GPT, Claude, Gemini), open-weight (Llama, Mistral, and Chinese labs DeepSeek/Qwen/Kimi), and small/specialized models.  The trade-off is capability vs control vs cost.  
+**Q: What are the three camps of 2026 model families, and what's the central trade-off?**  `Advanced`  
+There are three camps.  Closed frontier models, OpenAI's GPT, Anthropic's Claude, and Google's Gemini, are reached by API and give you the strongest capability with zero ops.  
 
-➡️ **Full answers, diagrams & practice:** [Scaling & the Research Frontier on Skillumen →](https://www.skillumen.com/blog/ai-engineer-interview-questions.html)
+➡️ **Full answers, diagrams and practice:** [Scaling & the Research Frontier on Skillumen](https://www.skillumen.com/blog/ai-engineer-interview-questions.html)
 📎 **Related deep-dives:** [AI Engineer Roadmap 2026](https://www.skillumen.com/blog/ai-engineer-roadmap-2026.html)
 
 ---
@@ -418,10 +418,11 @@ Reading questions is not rehearsing. [Skillumen](https://www.skillumen.com/?utm_
 - 🎙️ an **AI voice mock interview** that asks follow-ups and grades your answer
 - 🧪 a **build lab** and a real **RAG capstone** you deploy
 
-The **Foundations** tier is free forever. → **[Start free](https://www.skillumen.com/?utm_source=github&utm_medium=awesome-list&utm_campaign=ai-interview)**
+The **Foundations** tier is free forever. **[Start free](https://www.skillumen.com/?utm_source=github&utm_medium=awesome-list&utm_campaign=ai-interview)**
 
 ## Further reading
 
+- [The Skillumen question bank: 14 topics with worked answers](https://www.skillumen.com/question-bank/)
 - [AI Engineer Interview Questions (2026)](https://www.skillumen.com/blog/ai-engineer-interview-questions.html)
 - [LLM Interview Questions](https://www.skillumen.com/blog/llm-interview-questions.html)
 - [RAG Interview Questions](https://www.skillumen.com/blog/rag-interview-questions.html)
@@ -433,8 +434,8 @@ The **Foundations** tier is free forever. → **[Start free](https://www.skillum
 
 ## Contributing
 
-Found a question that should be here, or a sharper one-line answer? Open a PR or an issue. Keep answers to 1–2 sentences; link deep explanations rather than pasting them.
+Found a question that should be here, or a sharper one-line answer? Open a PR or an issue. Keep answers to one or two sentences and link deep explanations rather than pasting them.
 
 ## License
 
-[![CC0](https://licensebuttons.net/p/zero/1.0/80x15.png)](https://creativecommons.org/publicdomain/zero/1.0/) — released under CC0. Attribution to [Skillumen](https://www.skillumen.com) appreciated but not required.
+[![CC0](https://licensebuttons.net/p/zero/1.0/80x15.png)](https://creativecommons.org/publicdomain/zero/1.0/) Released under CC0. Attribution to [Skillumen](https://www.skillumen.com) appreciated but not required.
